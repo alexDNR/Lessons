@@ -351,3 +351,11 @@ print(total)
     Примечание. Порядок списков одинаковой длины должен соответствовать 
 порядку их вхождения в основной список.
 '''
+# s = input().split()
+# total = [[]]
+# count = 0
+# for i in s:
+#     count += 1
+#     for j in range(len(s) - count + 1):
+#         total.append(s[j:j+count])
+# print(total)        
