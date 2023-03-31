@@ -150,7 +150,8 @@ def test_object__wind__data_type_and_value(answer_request):
 
 # тест на проверку объекта --sys-- на тип и что внутри
 def test_object__sys__data_type_and_value(answer_request):
-    import datetime
+    from datetime import datetime
+    from datetime import date
 
     response = answer_request
     assert isinstance(response['sys'], dict)
@@ -163,10 +164,32 @@ def test_object__sys__data_type_and_value(answer_request):
     assert isinstance(response['sys']['country'], str) and len(response['sys']['country']) > 0 # Код страны
 
     # Дальше идут два временных поля. Сначала проверим преобразование этих полей в нормальную дату. Данные передаются в UTC
-    assert response['sys']['sunrise'].datetime.fromtimestamp()
-    assert response['sys']['sunset'].datetime.fromtimestamp()
+    assert datetime.fromtimestamp(response['sys']['sunrise'])
+    assert datetime.fromtimestamp(response['sys']['sunset'])
 
     # Теперь надо проверить что приходит текущая дата
-    #date_now = datetime.date.today() # Получение текущей даты
+    date_now = datetime.today().date() # Получение текущей даты 
 
-    # доделать завтра проверку на текущую дату и остальные поля, которые отдельно приходят, в основном словаре
+    assert datetime.fromtimestamp(response['sys']['sunrise']).date() == date_now
+    assert datetime.fromtimestamp(response['sys']['sunset']).date() == date_now
+
+
+def test_single_fields_from_response_and_data_value(answer_request):
+    from datetime import datetime
+    from datetime import date
+
+    response = answer_request
+
+    list_keys = ["base", "visibility", "dt", "timezone", "id", "name", "cod"]
+    for i in list_keys:
+        assert i in response
+
+    assert isinstance(response['id'], int) and response['id'] > 0 # ID города
+    assert isinstance(response['cod'], int) and response['cod'] > 0 # Внутренний параметр
+    assert isinstance(response['visibility'], int) and response['visibility'] > 0 # Видимость, метр. Максимальное значение видимости 10км
+    assert isinstance(response['base'], str) and len(response['base']) > 0 # Внутренний параметр
+    assert isinstance(response['name'], str) and len(response['name']) > 0 # Название города
+
+    # Два временных поля
+    assert isinstance(response['timezone'], int) and datetime.fromtimestamp(response['timezone']) # Сдвиг в секундах от UTC 
+    assert isinstance(response['dt'], int) and datetime.fromtimestamp(response['dt']) # Время расчета данных, unix, UTC
