@@ -105,9 +105,9 @@ def test_object__weather__data_type_and_value(response):
    
     # проверка на тип поля с ключём --id-- и проверка на то, что это значение должно быть больше 0
     assert isinstance(response['weather'][0]['id'], int) and response['weather'][0]['id'] > 0 # Идентификатор погодных условий
-    assert isinstance(response['weather'][0]['main'], str) and len(response['weather'][0]['main']) != 0 # Группа погодных параметров
-    assert isinstance(response['weather'][0]['description'], str) and len(response['weather'][0]['description']) != 0 # Погодные условия в группе
-    assert isinstance(response['weather'][0]['icon'], str) and len(response['weather'][0]['icon']) != 0 # Идентификатор значка погоды
+    assert isinstance(response['weather'][0]['main'], str) and response['weather'][0]['main'] # Группа погодных параметров
+    assert isinstance(response['weather'][0]['description'], str) and response['weather'][0]['description'] # Погодные условия в группе
+    assert isinstance(response['weather'][0]['icon'], str) and response['weather'][0]['icon'] # Идентификатор значка погоды
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --main-- на тип и что внутри
@@ -122,10 +122,10 @@ def test_object__main__data_type_and_value(response):
 
     # так как у нас в запросе параметр "units" указано "metric", то значения температуры приходят в градусах Цельсия 
     # проверка на тип поля с ключём --temp-- и проверка на то, что это значение должно лежать в пределах от -80 до +60 градусов Цельсия
-    assert isinstance(response['main']['temp'], float) and  -80 < response['main']['temp'] < 60 # температура фактическая
-    assert isinstance(response['main']['feels_like'], float) and -80 < response['main']['feels_like'] < 60 # температура ощущения  
-    assert isinstance(response['main']['temp_min'], float) and -80 < response['main']['temp_min'] < 60 # температура минимальная
-    assert isinstance(response['main']['temp_max'], float) and -80 < response['main']['temp_max'] < 60 # температура максимальная    
+    assert isinstance(response['main']['temp'], float) and  -80.0 < response['main']['temp'] < 60.0 # температура фактическая
+    assert isinstance(response['main']['feels_like'], float) and -80.0 < response['main']['feels_like'] < 60.0 # температура ощущения  
+    assert isinstance(response['main']['temp_min'], float) and -80.0 < response['main']['temp_min'] < 60.0 # температура минимальная
+    assert isinstance(response['main']['temp_max'], float) and -80.0 < response['main']['temp_max'] < 60.0 # температура максимальная    
     assert isinstance(response['main']['pressure'], int) and response['main']['pressure'] > 0 # давление      
     assert isinstance(response['main']['humidity'], int) and response['main']['humidity'] > 0 # влажность     
     assert isinstance(response['main']['sea_level'], int) and response['main']['sea_level'] > 0 # давление на уровне моря
@@ -141,9 +141,9 @@ def test_object__wind__data_type_and_value(response):
     for i in list_keys:
         assert i in response['wind']
 
-    assert isinstance(response['wind']['speed'], float) and response['wind']['speed'] >= 0 # это скорость ветра
+    assert isinstance(response['wind']['speed'], float) and response['wind']['speed'] >= 0.0 # это скорость ветра
     assert isinstance(response['wind']['deg'], int) and response['wind']['speed'] >= 0 # это градусы, они должны быть >= 0
-    assert isinstance(response['wind']['gust'], float) and response['wind']['gust'] >= 0 # это скорость порыва ветра, она должна быть >= 0
+    assert isinstance(response['wind']['gust'], float) and response['wind']['gust'] >= 0.0 # это скорость порыва ветра, она должна быть >= 0
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --sys-- на тип и что внутри
@@ -158,7 +158,7 @@ def test_object__sys__data_type_and_value(response):
     for i in list_keys:
         assert i in response['sys']
 
-    assert isinstance(response['sys']['country'], str) and len(response['sys']['country']) > 0 # Код страны
+    assert isinstance(response['sys']['country'], str) and response['sys']['country'] # Код страны
 
     # Дальше идут два временных поля. Сначала проверим преобразование этих полей в нормальную дату. Данные передаются в UTC
     assert datetime.fromtimestamp(response['sys']['sunrise'])
@@ -183,8 +183,8 @@ def test_single_fields_from_response_and_data_value(response):
     assert isinstance(response['id'], int) and response['id'] > 0 # ID города
     assert isinstance(response['cod'], int) and response['cod'] > 0 # Внутренний параметр
     assert isinstance(response['visibility'], int) and response['visibility'] > 0 # Видимость, метр. Максимальное значение видимости 10км
-    assert isinstance(response['base'], str) and len(response['base']) > 0 # Внутренний параметр
-    assert isinstance(response['name'], str) and len(response['name']) > 0 # Название города
+    assert isinstance(response['base'], str) and response['base'] # Внутренний параметр
+    assert isinstance(response['name'], str) and response['name'] # Название города
 
     # Два временных поля
     assert isinstance(response['timezone'], int) and datetime.fromtimestamp(response['timezone']) # Сдвиг в секундах от UTC 
