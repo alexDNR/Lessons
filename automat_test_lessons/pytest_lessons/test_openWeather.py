@@ -53,7 +53,7 @@ import pytest
 
 # фикстура получает данные с запроса на сайт и возвращает его в виде json объекта
 @pytest.fixture(scope="session")
-def answer_request(): 
+def response(): 
     import requests
 
     params = {"q" : "Kirovskoe", "appid" : "b13525faf9ad6f7036a2a6cb1b9aad9b", "units" : "metric", "lang" : "ru"} 
@@ -66,35 +66,33 @@ def answer_request():
 #----------------------------------------------------------------------------------
 
 # тест на проверку типа ответа на запрос - должен быть словарь
-def test__answer__type(answer_request): 
-    response = answer_request
+def test__answer__type(response): 
     assert isinstance(response, dict) 
 #----------------------------------------------------------------------------------
 
 # тест на проверку всех ключей в ответе
-def test_the_presence_of_keys_in_response(answer_request): 
-    response = answer_request
+def test_the_presence_of_keys_in_response(response): 
     list_keys = ["coord", "weather", "main", "wind", "clouds", "sys"]
     for i in list_keys:
         assert i in response
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --coord-- на тип и что внутри
-def test_object__coord__data_type_and_value(answer_request): 
-    response = answer_request
+def test_object__coord__data_type_and_value(response): 
+
     assert isinstance(response['coord'], dict)  
 
     # проверка на наличие --lon-- и --lat-- в словаре
     assert 'lon' in response['coord'] and 'lat' in response['coord']
     # проверка на тип данных float и что нет города с координатами 0 0 - эта точка находится в море
     assert isinstance(response['coord']['lon'], float) and isinstance(response['coord']['lat'], float)   
-    assert response['coord']['lon'] != 0 and response['coord']['lat'] != 0 
+    assert response['coord']['lon'] != 0.0 and response['coord']['lat'] != 0.0
      
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --weather-- на тип и что внутри
-def test_object__weather__data_type_and_value(answer_request): 
-    response = answer_request
+def test_object__weather__data_type_and_value(response): 
+
     assert isinstance(response['weather'], list) # сам объект должен быть список
 
     # так как у нас объект список состоящий из одного элемента, то в нём должен быть словарь
@@ -113,8 +111,8 @@ def test_object__weather__data_type_and_value(answer_request):
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --main-- на тип и что внутри
-def test_object__main__data_type_and_value(answer_request): 
-    response = answer_request
+def test_object__main__data_type_and_value(response): 
+
     assert isinstance(response['main'], dict) # сам объект должен быть словарь
 
     # проверка на наличие всех ключей в словаре
@@ -134,8 +132,8 @@ def test_object__main__data_type_and_value(answer_request):
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --wind-- на тип и что внутри
-def test_object__wind__data_type_and_value(answer_request):
-    response = answer_request
+def test_object__wind__data_type_and_value(response):
+
     assert isinstance(response['wind'], dict)
 
     # проверка на наличие всех ключей в словаре
@@ -149,11 +147,10 @@ def test_object__wind__data_type_and_value(answer_request):
 #----------------------------------------------------------------------------------
 
 # тест на проверку объекта --sys-- на тип и что внутри
-def test_object__sys__data_type_and_value(answer_request):
+def test_object__sys__data_type_and_value(response):
     from datetime import datetime
     from datetime import date
 
-    response = answer_request
     assert isinstance(response['sys'], dict)
     
     # проверка на наличие всех ключей в словаре
@@ -172,13 +169,12 @@ def test_object__sys__data_type_and_value(answer_request):
 
     assert datetime.fromtimestamp(response['sys']['sunrise']).date() == date_now
     assert datetime.fromtimestamp(response['sys']['sunset']).date() == date_now
+#----------------------------------------------------------------------------------
 
-
-def test_single_fields_from_response_and_data_value(answer_request):
+# тест на проверку отдельных объектов на тип и что внутри
+def test_single_fields_from_response_and_data_value(response):
     from datetime import datetime
     from datetime import date
-
-    response = answer_request
 
     list_keys = ["base", "visibility", "dt", "timezone", "id", "name", "cod"]
     for i in list_keys:
