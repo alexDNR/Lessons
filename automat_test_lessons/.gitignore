@@ -1,0 +1,4 @@
+*__pycache__
+*configuration_tests.py
+*test_lesson.py
+*.pytest_cashe
