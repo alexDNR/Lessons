@@ -2,6 +2,7 @@
 # проверим по каждому словарю поля и их типы и значения
 
 import pytest
+from src.enums.global_enums import GlobalErrorMessage
 
 # фикстура получает данные с запроса на сайт и возвращает его в виде json объекта
 @pytest.fixture(scope="session")
@@ -15,12 +16,13 @@ def response():
         answer = response.json()
         return answer
     else:
-        return None     
+        return None 
+        print(GlobalErrorMessage.WRONG_STATUS_CODE.value)    
 #----------------------------------------------------------------------------------
 
 # тест на проверку типа ответа на запрос - должен быть словарь
 def test_answer_type(response): 
-    assert isinstance(response, dict) 
+    assert isinstance(response, dict), GlobalErrorMessage.WRONG_DICT_TYPE.value
 #----------------------------------------------------------------------------------
 
 def test_answer_field(response):
@@ -48,6 +50,7 @@ def test_answer_fields_data(response):
     assert response['main']['pressure'] > 0 # давление      
     assert response['main']['humidity'] > 0 # влажность     
     assert response['main']['sea_level'] > 0 # давление на уровне моря
+#----------------------------------------------------------------------------------
     assert response['wind']['speed'] >= 0.0 # это скорость ветра
     assert response['wind']['speed'] >= 0 # это градусы, они должны быть >= 0
     assert response['wind']['gust'] >= 0.0 # это скорость порыва ветра, она должна быть >= 0
