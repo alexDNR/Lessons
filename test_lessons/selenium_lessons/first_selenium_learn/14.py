@@ -22,7 +22,7 @@ try:
     print("2. Загрузили страницу --", time_record())
 
     #нужно сделать так, чтобы тест ждал пока станет активной кнопка, чтобы сделать клик
-    button = browser.find_element_by_id("book")
+    button = browser.find_element(by=By.ID, value="book")
     price = WebDriverWait(browser, 12).until(EC.text_to_be_present_in_element((By.ID, "price"), "$100")) # ждём тут и только после этого кликаем на кнопку
     print("3. Подождали пока цена упала до 100$ --", time_record())
     button.click()
@@ -30,15 +30,15 @@ try:
 
     browser.execute_script("window.scrollTo(0, 100)") # скроллим вниз стриницу
 
-    x = browser.find_element_by_id("input_value").text
+    x = browser.find_element(by=By.ID, value="input_value").text
     print("5. Значение переменной Х =", x, " -- ", time_record())
     y = calc(x)
     print("6. Значение переменной Y =", y, " -- ", time_record())
-    answer = browser.find_element_by_id("answer")
+    answer = browser.find_element(by=By.ID, value="answer")
     answer.send_keys(y)
     print("7. Вписали ответ --", time_record())
 
-    submit = browser.find_element_by_id("solve")
+    submit = browser.find_element(by=By.ID, value="solve")
     submit.click()
     print("8. Кликнули по кнопке --", time_record())
     time.sleep(5)
