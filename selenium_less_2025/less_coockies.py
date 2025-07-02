@@ -254,4 +254,38 @@ driver.delete_all_cookies()
 #     print(sum)
     
 
-    
+"""
+🔹 Задача: Помогите Пряне попасть на сайт 
+1️⃣ Зайдите на сайт-тренажёр с помощью Selenium.
+2️⃣ Установите cookie с именем "secretKey" и значением "selenium123".
+3️⃣ Обновите страницу. Если всё сделано правильно, появится пароль в элементе с id="password".
+4️⃣ Извлеките пароль .text
+5️⃣ Вставьте пароль в поле ниже, между кавычками.
+"""
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# with webdriver.Chrome() as chrome:
+#     chrome.get('https://parsinger.ru/selenium/6/6.3.3/index.html')
+#     chrome.add_cookie({'name':'secretKey', 'value': 'selenium123'})
+#     chrome.refresh()
+#     print(chrome.find_element(By.ID, 'password').text)
+
+
+"""
+🔹 Задача: На сайте-тренажёре вам предстоит выполнить несколько шагов, связанных с прокруткой и взаимодействием с элементами.
+1️⃣ Откройте сайт-тренажёр с помощью Selenium.
+2️⃣ Прокрутите страницу вниз до кнопки "Финиш!". Используйте scrollIntoView()метод прокрутки к элементу с id="target".
+3️⃣ Нажмите на кнопку "Финиш!".
+4️⃣ Извлеките секретный ключ.
+5️⃣ Вставьте пароль в поле ниже, между кавычками.
+💡 Совет: выведите результат в print(). 
+"""
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# with webdriver.Chrome() as chrome:
+#     chrome.get('https://parsinger.ru/selenium/6/6.5/index.html')
+#     btn = chrome.find_element(By.ID, "target")
+#     chrome.execute_script("return arguments[0].scrollIntoView(true);", btn)
+#     btn.click()
+#     secret_key = chrome.find_element(By.ID, "secret-key").text
+#     print(secret_key)
